@@ -75,23 +75,42 @@
 
         // Verschlüsseln
         function encrypt() {
-            const inputText = document.getElementById('inputText').value.toUpperCase();
+            const inputText = document.getElementById('inputText').value;
             let encryptedText = '';
             for (let char of inputText) {
-                encryptedText += substitution[char] || char;
+                // Verschlüsseln der Buchstaben, andere Zeichen bleiben unverändert
+                if (/[A-Za-z]/.test(char)) {
+                    encryptedText += substitution[char.toUpperCase()] || char;
+                } else {
+                    encryptedText += char;
+                }
             }
-            document.getElementById('outputText').value = encryptedText;
+            // Erste Buchstaben jedes Wortes in Großbuchstaben umwandeln
+            document.getElementById('outputText').value = capitalizeFirstLetter(encryptedText);
         }
 
         // Entschlüsseln (Umkehr der Substitution)
         function decrypt() {
-            const inputEncrypted = document.getElementById('inputEncrypted').value.toUpperCase();
+            const inputEncrypted = document.getElementById('inputEncrypted').value;
             let decryptedText = '';
             const reverseSubstitution = Object.fromEntries(Object.entries(substitution).map(([key, value]) => [value, key])); // Umgekehrte Substitution
             for (let char of inputEncrypted) {
-                decryptedText += reverseSubstitution[char] || char;
+                // Entschlüsseln der Buchstaben, andere Zeichen bleiben unverändert
+                if (/[A-Za-z]/.test(char)) {
+                    decryptedText += reverseSubstitution[char.toUpperCase()] || char;
+                } else {
+                    decryptedText += char;
+                }
             }
-            document.getElementById('outputDecrypted').value = decryptedText;
+            // Erste Buchstaben jedes Wortes in Großbuchstaben umwandeln
+            document.getElementById('outputDecrypted').value = capitalizeFirstLetter(decryptedText);
+        }
+
+        // Funktion um den ersten Buchstaben jedes Wortes in Großbuchstaben zu setzen
+        function capitalizeFirstLetter(text) {
+            return text.replace(/\b\w/g, function(char) {
+                return char.toUpperCase();
+            });
         }
     </script>
 </body>
