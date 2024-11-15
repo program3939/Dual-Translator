@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verschlüsselungs- & Entschlüsselungstool</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #fff;
+            font-family: Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        input, button {
+            padding: 12px;
+            font-size: 16px;
+            margin: 10px;
+            border-radius: 5px;
+            border: none;
+            width: 100%;
+        }
+        input {
+            background-color: #1E1E1E;
+            color: #fff;
+        }
+        button {
+            background-color: #BB86FC;
+            color: #121212;
+        }
+        h1 {
+            color: #BB86FC;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Verschlüsselungs- & Entschlüsselungstool</h1>
+
+        <!-- Verschlüsseln -->
+        <label for="inputText">Normaler Text eingeben:</label>
+        <input type="text" id="inputText" placeholder="Normaler Text hier eingeben">
+        <button onclick="encrypt()">Verschlüsseln</button>
+
+        <h2>Verschlüsselter Text:</h2>
+        <input type="text" id="outputText" readonly placeholder="Hier erscheint der verschlüsselte Text">
+
+        <hr>
+
+        <!-- Entschlüsseln -->
+        <label for="inputEncrypted">Verschlüsselter Text eingeben:</label>
+        <input type="text" id="inputEncrypted" placeholder="Verschlüsselter Text hier eingeben">
+        <button onclick="decrypt()">Entschlüsseln</button>
+
+        <h2>Entschlüsselter Text:</h2>
+        <input type="text" id="outputDecrypted" readonly placeholder="Hier erscheint der entschlüsselte Text">
+    </div>
+
+    <script>
+        const substitution = {
+            'A': 'J', 'B': 'Q', 'C': 'V', 'D': 'X', 'E': 'K',
+            'F': 'Z', 'G': 'T', 'H': 'W', 'I': 'B', 'J': 'M',
+            'K': 'A', 'L': 'O', 'M': 'S', 'N': 'U', 'O': 'P',
+            'P': 'E', 'Q': 'C', 'R': 'F', 'S': 'Y', 'T': 'N',
+            'U': 'R', 'V': 'D', 'W': 'G', 'X': 'H', 'Y': 'L', 'Z': 'I'
+        };
+
+        // Verschlüsseln
+        function encrypt() {
+            const inputText = document.getElementById('inputText').value.toUpperCase();
+            let encryptedText = '';
+            for (let char of inputText) {
+                encryptedText += substitution[char] || char;
+            }
+            document.getElementById('outputText').value = encryptedText;
+        }
+
+        // Entschlüsseln (Umkehr der Substitution)
+        function decrypt() {
+            const inputEncrypted = document.getElementById('inputEncrypted').value.toUpperCase();
+            let decryptedText = '';
+            const reverseSubstitution = Object.fromEntries(Object.entries(substitution).map(([key, value]) => [value, key])); // Umgekehrte Substitution
+            for (let char of inputEncrypted) {
+                decryptedText += reverseSubstitution[char] || char;
+            }
+            document.getElementById('outputDecrypted').value = decryptedText;
+        }
+    </script>
+</body>
+</html>
