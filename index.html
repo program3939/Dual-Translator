@@ -78,14 +78,18 @@
             const inputText = document.getElementById('inputText').value;
             let encryptedText = '';
             for (let char of inputText) {
-                // Verschlüsseln der Buchstaben, andere Zeichen bleiben unverändert
                 if (/[A-Za-z]/.test(char)) {
-                    encryptedText += substitution[char.toUpperCase()] || char;
+                    // Wenn der Buchstabe groß ist, bleibt er groß
+                    if (char === char.toUpperCase()) {
+                        encryptedText += substitution[char.toUpperCase()] || char;
+                    } else {
+                        encryptedText += substitution[char.toUpperCase()].toLowerCase() || char;
+                    }
                 } else {
                     encryptedText += char;
                 }
             }
-            // Erste Buchstaben jedes Wortes in Großbuchstaben umwandeln
+            // Erster Buchstabe jedes Wortes in Großbuchstaben
             document.getElementById('outputText').value = capitalizeFirstLetter(encryptedText);
         }
 
@@ -95,14 +99,18 @@
             let decryptedText = '';
             const reverseSubstitution = Object.fromEntries(Object.entries(substitution).map(([key, value]) => [value, key])); // Umgekehrte Substitution
             for (let char of inputEncrypted) {
-                // Entschlüsseln der Buchstaben, andere Zeichen bleiben unverändert
                 if (/[A-Za-z]/.test(char)) {
-                    decryptedText += reverseSubstitution[char.toUpperCase()] || char;
+                    // Wenn der Buchstabe groß ist, bleibt er groß
+                    if (char === char.toUpperCase()) {
+                        decryptedText += reverseSubstitution[char.toUpperCase()] || char;
+                    } else {
+                        decryptedText += reverseSubstitution[char.toUpperCase()].toLowerCase() || char;
+                    }
                 } else {
                     decryptedText += char;
                 }
             }
-            // Erste Buchstaben jedes Wortes in Großbuchstaben umwandeln
+            // Erster Buchstabe jedes Wortes in Großbuchstaben
             document.getElementById('outputDecrypted').value = capitalizeFirstLetter(decryptedText);
         }
 
